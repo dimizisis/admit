@@ -9,6 +9,8 @@ public class Decision {
     private String dDate;
     private List<ModelParameter> models;
 
+    private final int INTERVAL_LEN = 10;
+
     public Decision(String name, Project project, String owner, String dDate){
         this.name = name;
         this.project = project;
@@ -17,13 +19,19 @@ public class Decision {
         this.models = new ArrayList<>();
     }
 
+    /**
+     * Tunes cost & benefit analysis, given a min & a max value for a specific parameter.
+     *
+     * @param  min  the parameter's value minimum threshold
+     * @param  max  the parameter's value maximum threshold
+     */
     public void tuneCostBenefitAnalysis(int min, int max, String parameter){
         List<Double> intervals = new ArrayList<>();
 
         int range = max - min;
-        double interval = range / 10;
+        double interval = range / INTERVAL_LEN;
 
-        for (int i=0; i<=10; ++i)
+        for (int i=0; i<=INTERVAL_LEN; ++i)
             intervals.add(min + interval*i);
 
         for (Double i : intervals)
@@ -33,6 +41,14 @@ public class Decision {
 
     }
 
+    /**
+     * Finds a specific model (Cost or Benefit) and returns its instance.
+     * If no model exists with the name given, returns null
+     *
+     * @param  modelName  the model's name that is being searched
+     *
+     * @return  the model's instance (ModelParameter) if exists, null otherwise
+     */
     public ModelParameter findModel(String modelName){
         for (ModelParameter m : models)
             if (m.getName().equals(modelName))
@@ -40,14 +56,34 @@ public class Decision {
         return null;
     }
 
+    /**
+     * Adds a model (Cost or Benefit) to decision's models list
+     * Returns true if addition was successful, false otherwise
+     *
+     * @param  model  the model to be added to decision's model list
+     *
+     * @return  true if addition was successful, false otherwise
+     */
     public boolean addModel(ModelParameter model){
-        models.add(model);
-        return true;
+        try {
+            models.add(model);
+            return true;
+        } catch (Exception e){ return false; }
     }
 
+    /**
+     * Removes a model (Cost or Benefit) from decision's models list
+     * Returns true if removal was successful, false otherwise
+     *
+     * @param  model  the model to be removed from decision's model list
+     *
+     * @return  true if removal was successful, false otherwise
+     */
     public boolean removeModel(ModelParameter model){
-        try { models.remove(model); } catch (Exception e){ return false; }
-        return true;
+        try {
+            models.remove(model);
+            return true;
+        } catch (Exception e){ return false; }
     }
 
     public String getName() { return name; }

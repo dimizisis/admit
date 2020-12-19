@@ -17,7 +17,16 @@ public class Equation {
         initializeParameters(parseParameterNames());
     }
 
-    public void putParameterWeight(String name, double weight) { parameters.put(name, weight); }
+    /**
+     * Updates a parameter's weight, according to a value given.
+     * Returns true if addition was successful, false otherwise
+     *
+     * @param  parameterName  the parameter's name
+     * @param  weight  the new parameter's weight
+     *
+     * @return  true if addition was successful, false otherwise
+     */
+    public void putParameterWeight(String parameterName, double weight) { parameters.put(parameterName, weight); }
 
     private void initializeParameters(Set<String> paramNames){ paramNames.forEach(name -> this.parameters.put(name, 0.0)); }
 
@@ -29,6 +38,12 @@ public class Equation {
         return names;
     }
 
+    /**
+     * Computes the equation with the last updated parameter's weights
+     * and returns the final cost.
+     *
+     * @return  the final cost
+     */
     public double computeEquation() {
         double finalCost = 0.0;
         Expression e = new ExpressionBuilder(this.equationStr)
@@ -39,6 +54,15 @@ public class Equation {
         return finalCost;
     }
 
+    /**
+     * Computes the equation with the last updated parameter's weights, but
+     * substituting the one parameter given (key-value map entry: parameterName, parameterVal),
+     * and returns the final cost
+     *
+     * @param  param  the parameter (key-value map entry: parameterName, parameterVal)
+     *
+     * @return  the final cost
+     */
     public double computeEquation(Map.Entry<String, Double> param) {
         double finalCost = 0.0;
         Map<String, Double> tmpParams = new HashMap<>(this.parameters);

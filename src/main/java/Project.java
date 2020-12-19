@@ -26,8 +26,29 @@ public class Project {
         decisions = new HashSet<>();
     }
 
-    public void addDecision(Decision decision) { decisions.add(decision); }
+    /**
+     * Adds a decision to project's decision list
+     * Returns true if addition was successful, false otherwise
+     *
+     * @param  decision  the decision to be added to project's model list
+     *
+     * @return  true if addition was successful, false otherwise
+     */
+    public boolean addDecision(Decision decision) {
+        try {
+            decisions.add(decision);
+            return true;
+        } catch (Exception e){ return false; }
+    }
 
+    /**
+     * Finds a specific decision and returns its instance.
+     * If no decision exists with the name given, returns null
+     *
+     * @param  decisionName  the decision's name that is being searched
+     *
+     * @return  the decision's instance (Decision) if exists, null otherwise
+     */
     public Decision findDecision(String decisionName) {
         for (Decision d : decisions)
             if (d.getName().equals(decisionName))
@@ -35,10 +56,32 @@ public class Project {
         return null;
     }
 
-    public void insertAllDecisionsToFile() {
-        // Todo
+    /**
+     * Removes a decision from project's decision list
+     * Returns true if removal was successful, false otherwise
+     *
+     * @param  decision  the decision to be removed from project's decision list
+     *
+     * @return  true if removal was successful, false otherwise
+     */
+    public boolean removeDecision(Decision decision){
+        try { decisions.remove(decision); } catch (Exception e){ return false; }
+        return true;
     }
 
+    /* TODO: 19/12/2020 */
+    public boolean insertAllDecisionsToFile() {
+        return true;
+    }
+
+    /**
+     * Tunes cost & benefit analysis, given a specific decision,
+     * a min & a max value for a specific parameter.
+     *
+     * @param  min  the parameter's value minimum threshold
+     * @param  max  the parameter's value maximum threshold
+     * @param  dec  the decision provided (containing the parameter)
+     */
     public void tuneCostBenefitAnalysis(Decision dec, int min, int max, String parameter) {
         Decision currentDecision = findDecision(dec.getName());
         currentDecision.tuneCostBenefitAnalysis(min, max, parameter);
