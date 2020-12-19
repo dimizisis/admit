@@ -1,5 +1,6 @@
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class Project {
     private String name;
@@ -10,7 +11,7 @@ public class Project {
     private int marketSize;
     private String marketShare;
     private double price;
-    private List<Decision> decisions;
+    private Set<Decision> decisions;
 
     public Project(String name, double td, double energy, String security,
                    int loc, int marketSize, String marketShare, double price) {
@@ -22,22 +23,14 @@ public class Project {
         this.marketSize = marketSize;
         this.marketShare = marketShare;
         this.price = price;
-
-        decisions = new ArrayList<>();
+        decisions = new HashSet<>();
     }
 
-    public boolean hasName(String str) {
-        return str.indexOf(name) == 0;
-    }
+    public void addDecision(Decision decision) { decisions.add(decision); }
 
-    public void addDecision(Decision decision) {
-        if (!decisionExists(decision.getName(), decision.getProject()))
-            decisions.add(decision);
-    }
-
-    public Decision findDecision(Decision decision) {
+    public Decision findDecision(String decisionName) {
         for (Decision d : decisions)
-            if (d.hasName(decision.getName()))
+            if (d.getName().equals(decisionName))
                 return d;
         return null;
     }
@@ -46,31 +39,9 @@ public class Project {
         // Todo
     }
 
-    public boolean decisionExists(String name, Project project) {
-        for (Decision d : decisions)
-            if (d.isEqual(name, project))
-                return true;
-        return false;
-    }
-
-    public void editEquation(Decision dec, ModelParameter model) {
-        Decision currentDecision = findDecision(dec);
-        currentDecision.editEquation(model);
-    }
-
-    public void showDataEntryTable(Decision dec) {
-        Decision currentDecision = findDecision(dec);
-        currentDecision.showDataEntryTable(this);
-    }
-
-    public void tuneCostBenefitAnalysis(Decision dec, int min, int max, Parameter parameter) {
-        Decision currentDecision = findDecision(dec);
-        currentDecision.tuneCostBenefitAnalysis(min, max, parameter.toString());
-    }
-
-    public void showCostBenefitAnalysis(Decision dec){
-        Decision currentDecision = findDecision(dec);
-        currentDecision.showCostBenefitAnalysis();
+    public void tuneCostBenefitAnalysis(Decision dec, int min, int max, String parameter) {
+        Decision currentDecision = findDecision(dec.getName());
+        currentDecision.tuneCostBenefitAnalysis(min, max, parameter);
     }
 
     public int getLoC() {
@@ -93,7 +64,18 @@ public class Project {
         return name;
     }
 
+    public Set<Decision> getDecisions() { return decisions; }
+
     public String toString(){
         return this.getName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof Project)) return false;
+
+        Project other = (Project)o;
+        return other.getName().equals(this.getName());
     }
 }

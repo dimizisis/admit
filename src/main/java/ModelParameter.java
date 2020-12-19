@@ -1,82 +1,31 @@
-import java.util.List;
 
-public abstract class ModelParameter {
-    protected String name;
-    protected Equation equation;
-    protected Project project;
-    protected Decision decision;
+public class ModelParameter {
+    private String name;
+    private Equation equation;
+    private String project;
+    private String decision;
+    private String type;
 
-    public ModelParameter(String name, Project project, Decision decision){
+    public ModelParameter(String name, String project, String decision, String type){
         this.name = name;
         this.project = project;
         this.decision = decision;
+        this.type = type;
     }
 
-//    public void printParametersInSelect(){
-//        equation.prineParametersInSelect();
-//    }
+    public String getName() { return this.name; }
 
-//    public void editEquation(){
-//        System.out.println(name);
-//        equation.editEquation();
-//    }
+    public String getType() { return this.type; }
 
-    public boolean hasName(String str){
-        return str.indexOf(name) == 0;
+    public Equation getEquation() { return equation; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof ModelParameter)) return false;
+
+        ModelParameter other = (ModelParameter)o;
+        return other.getName().equals(this.getName());
     }
-
-    public boolean isEqual(Project p, Decision d, String n){
-        if (n.indexOf(name) == 0)
-            if (p.toString().indexOf(project.toString()) == 0)
-                return d.toString().indexOf(decision.toString()) == 0;
-
-        return false;
-    }
-
-    public int tuneCosts(int currentVal, List<Parameter> parameters){
-        return (this.getType().indexOf("cost") == 0) ?
-                equation.tuneEquation(name, "-", currentVal, parameters) : 0;
-    }
-
-    public int tuneCosts(int currentVal, String parameter){
-        return (this.getType().indexOf("cost") == 0) ?
-                equation.tuneEquation(name, "-", currentVal, parameter) : 0;
-    }
-
-    public int tuneBenefits(int currentVal, List<Parameter> parameters){
-        return (this.getType().indexOf("benefit") == 0) ?
-                equation.tuneEquation(name, "-", currentVal, parameters) : 0;
-    }
-
-    public int tuneBenefits(int currentVal, String parameter){
-        return (this.getType().indexOf("benefit") == 0) ?
-                equation.tuneEquation(name, "-", currentVal, parameter) : 0;
-    }
-
-    public int calcCosts(){
-        return (this.getType().indexOf("cost") == 0) ?
-                equation.computeEquation(name, "-") : 0;
-    }
-
-    public int calcBenefits(){
-        return (this.getType().indexOf("benefit") == 0) ?
-                equation.computeEquation(name, "") : 0;
-    }
-
-//    public void showDataEntryTable(String pr) {
-//        System.out.println(name);
-//        equation.showDataEntryTable(pr);
-//    }
-
-    public void setEquationType(Equation eq){
-        this.equation = eq;
-    }
-
-    public String getName(){
-        return this.name;
-    }
-
-    public abstract String showModel();
-    public abstract String getType();
 
 }

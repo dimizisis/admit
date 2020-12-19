@@ -1,93 +1,55 @@
-import java.util.List;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
-public abstract class Equation {
-    protected Constant constant;
-    protected List<Parameter> parameters;
-    protected List<Operand> operands;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Equation {
+    protected Map<String, Double> parameters;
     protected String id;
+    protected String equationStr;
 
-    public Equation(String id){
+    public Equation(String id, String eq){
         this.id = id;
+        this.equationStr = eq;
+        this.parameters = new HashMap<>();
+        initializeParameters(parseParameterNames());
     }
 
-//    public void printParametersInSelect(){
-//        for (Parameter p : parameters)
-//            p.printParametersInSelect();
-//
-//        for (Operand o : operands)
-//            o.printParametersInSelect();
-//    }
+    public void putParameterWeight(String name, double weight) { parameters.put(name, weight); }
 
-//    public void editEquation(){
-//        if (getType().indexOf("linear") == 0){
-//            System.out.println("Parameter Name");
-//            System.out.println("Weight");
-//        }
-//        else
-//            System.out.println("Parameter Name");
-//
-//        int i = 0;
-//
-//        for (Parameter p : parameters) {
-//            p.editInTR(i);
-//            i += 2;
-//        }
-//
-//        for (Operand o : operands) {
-//            o.editInTR(i);
-//            ++i;
-//        }
-//
-//        if (constant != null)
-//            constant.editInTR(i);
-//    }
+    private void initializeParameters(Set<String> paramNames){ paramNames.forEach(name -> this.parameters.put(name, 0.0)); }
 
-//    public void showDataEntryTable(String pr){
-//        for (Parameter p : parameters)
-//            p.printInTR(pr);
-//
-//        for (Operand o : operands)
-//            o.printInTR(pr);
-//
-//        if (constant != null)
-//            constant.printIntR();
-//    }
-
-    public boolean parameterExists(String id, String n){
-        for (Parameter p : parameters)
-            if (id.indexOf(this.id) == 0)
-                if (p.isEqual(n))
-                    return true;
-        return false;
+    private Set<String> parseParameterNames(){
+        Set<String> names = new HashSet<>();
+        Matcher m = Pattern.compile("\\b([A-Za-z]\\w*)\\b").matcher(this.equationStr);
+        while (m.find())
+            names.add(m.group());
+        return names;
     }
 
-    public boolean operandExists(String id, Operand n){
-        for (Operand o : operands)
-            if (id.indexOf(this.id) == 0)
-                if (o.isEqual(n.getName()))
-                    return true;
-        return false;
+    public double computeEquation() {
+        double finalCost = 0.0;
+        Expression e = new ExpressionBuilder(this.equationStr)
+                .variables(this.parameters.keySet())
+                .build()
+                .setVariables(this.parameters);
+        try { finalCost = e.evaluate(); } catch (Exception ignored){}
+        return finalCost;
     }
 
-    public void setConstant(String name, int value){
-        this.constant = new Constant(name, value);
+    public double computeEquation(Map.Entry<String, Double> param) {
+        double finalCost = 0.0;
+        Map<String, Double> tmpParams = new HashMap<>(this.parameters);
+        tmpParams.put(param.getKey(), param.getValue());
+        Expression e = new ExpressionBuilder(this.equationStr)
+                .variables(tmpParams.keySet())
+                .build()
+                .setVariables(tmpParams);
+        try { finalCost = e.evaluate(); } catch (Exception ignored){}
+        return finalCost;
     }
 
-    public void addParameter(String name, int weight) {
-        if (!parameterExists(this.id, name))
-            parameters.add(new Parameter(name, weight));
-    }
-
-    public void addOperand(String name) {
-        if (!parameterExists(this.id, name))
-            operands.add(new Operand(name));
-    }
-
-    public abstract String showEquation();
-
-    public abstract String getType();
-    public abstract int computeEquation(String name, String sign);
-    public abstract int tuneEquation(String name, String sign, int currentVal, List<Parameter> parameters);
-    public abstract int tuneEquation(String name, String sign, int currentVal, String parameter);
-
+    public Map<String, Double> getParameters() { return parameters; }
 }
