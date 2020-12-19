@@ -60,6 +60,7 @@ public class Equation {
      * and returns the final cost
      *
      * @param  param  the parameter (key-value map entry: parameterName, parameterVal)
+     *                use ' new AbstractMap.SimpleEntry<>(name, val) '
      *
      * @return  the final cost
      */
