@@ -1,5 +1,6 @@
 
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class Project {
@@ -50,10 +51,9 @@ public class Project {
      * @return  the decision's instance (Decision) if exists, null otherwise
      */
     public Decision findDecision(String decisionName) {
-        for (Decision d : decisions)
-            if (d.getName().equals(decisionName))
-                return d;
-        return null;
+        try {
+            return decisions.stream().filter(d -> d.getName().equals(decisionName)).findFirst().get();
+        } catch (NoSuchElementException e){ return null; }
     }
 
     /**

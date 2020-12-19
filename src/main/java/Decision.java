@@ -1,6 +1,7 @@
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class Decision {
     private String name;
@@ -34,11 +35,8 @@ public class Decision {
         for (int i=0; i<=INTERVAL_LEN; ++i)
             intervals.add(min + interval*i);
 
-        for (Double i : intervals)
-            for (ModelParameter m : models)
-                if (m.getEquation().getParameters().containsKey(parameter))
-                    m.getEquation().computeEquation(new AbstractMap.SimpleEntry<>(parameter, i));
-
+        intervals.forEach(i ->
+            models.stream().filter(m -> m.getEquation().getParameters().containsKey(parameter)).forEach(m -> m.getEquation().computeEquation(new AbstractMap.SimpleEntry<>(parameter, i))));
     }
 
     /**
@@ -50,10 +48,9 @@ public class Decision {
      * @return  the model's instance (ModelParameter) if exists, null otherwise
      */
     public ModelParameter findModel(String modelName){
-        for (ModelParameter m : models)
-            if (m.getName().equals(modelName))
-                return m;
-        return null;
+        try {
+            return models.stream().filter(m -> m.getName().equals(modelName)).findFirst().get();
+        } catch (NoSuchElementException e){ return null; }
     }
 
     /**

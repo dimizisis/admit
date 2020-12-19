@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ProjectList {
 
@@ -62,7 +63,7 @@ public class ProjectList {
      * Returns true if addition was successful, false otherwise
      *
      * @param  projectName  the project's name to be added to the aggregated project list
-     * @param  td  the project's technical debt
+     * @param  td  the project's technical debt principal
      * @param  energy  the project's energy consumption
      * @param  security  the project's security type
      * @param  loc  the project's loc
@@ -128,10 +129,9 @@ public class ProjectList {
      * @return  the project's instance (Project) if exists, null otherwise
      */
     public Project findProject(String projectName){
-        for (Project pr : projects)
-            if (pr.getName().equals(projectName))
-                return pr;
-        return null;
+        try {
+            return projects.stream().filter(pr -> pr.getName().equals(projectName)).findFirst().get();
+        } catch (NoSuchElementException e){ return null; }
     }
 
     /**
@@ -152,7 +152,7 @@ public class ProjectList {
         } catch (Exception e) { return false; }
     }
 
-//    public void store(){
+//    public boolean store(){
 //
 //    }
 
