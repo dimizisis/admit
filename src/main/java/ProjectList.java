@@ -16,7 +16,7 @@ public class ProjectList {
      */
     public boolean removeProject(String projectName){
         try {
-            projects.remove(findProject(projectName));
+            this.projects.remove(findProject(projectName));
             return true;
         } catch (NullPointerException e) { return false; }
     }
@@ -92,11 +92,11 @@ public class ProjectList {
      *
      * @return  true if addition was successful, false otherwise
      */
-    public boolean addModelToDecision(String projectName, String decisionName, String modelName, String type) {
+    public boolean addModelToDecision(String projectName, String decisionName, String modelName, String type, String equationStr) {
         try {
             Project tmpProject = findProject(projectName);
             Decision tmpDec = tmpProject.findDecision(decisionName);
-            tmpDec.addModel(new ModelParameter(modelName, projectName, decisionName, type));
+            tmpDec.addModel(new ModelParameter(modelName, projectName, decisionName, type, new Equation(equationStr)));
             return true;
         } catch (Exception e) { return false; }
     }
@@ -130,25 +130,27 @@ public class ProjectList {
      */
     public Project findProject(String projectName){
         try {
-            return projects.stream().filter(pr -> pr.getName().equals(projectName)).findFirst().get();
+            return this.projects.stream().filter(pr -> pr.getName().equals(projectName)).findFirst().get();
         } catch (NoSuchElementException e){ return null; }
     }
 
     /**
      * Tunes cost & benefit analysis, given a project name, a decision name,
      * a min & a max value for a specific parameter.
+     * Returns true if analysis tuned successfully, false otherwise.
      *
      * @param  projectName  the project's name that contains the decision
      * @param  decisionName  the decision's name that contains the parameter given
      * @param  min  the parameter's value minimum threshold
      * @param  max  the parameter's value maximum threshold
      * @param  parameter  the parameter's name
+     *
+     * @return true if analysis tuned successfully, false otherwise.
      */
     public boolean tuneCostBenefitAnalysis(String projectName, String decisionName, int min, int max, String parameter) {
         try {
             Project tmpProject = findProject(projectName);
-            tmpProject.tuneCostBenefitAnalysis(tmpProject.findDecision(decisionName), min, max, parameter);
-            return true;
+            return tmpProject.tuneCostBenefitAnalysis(tmpProject.findDecision(decisionName), min, max, parameter);
         } catch (Exception e) { return false; }
     }
 
@@ -156,7 +158,7 @@ public class ProjectList {
 //
 //    }
 
-//    public void load(){
+//    public boolean load(){
 //
 //    }
 }

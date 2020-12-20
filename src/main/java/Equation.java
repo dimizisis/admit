@@ -17,6 +17,12 @@ public class Equation {
         initializeParameters(parseParameterNames());
     }
 
+    public Equation(String eq){
+        this.equationStr = eq;
+        this.parameters = new HashMap<>();
+        initializeParameters(parseParameterNames());
+    }
+
     /**
      * Updates a parameter's weight, according to a value given.
      * Returns true if addition was successful, false otherwise
@@ -26,7 +32,7 @@ public class Equation {
      *
      * @return  true if addition was successful, false otherwise
      */
-    public void putParameterWeight(String parameterName, double weight) { parameters.put(parameterName, weight); }
+    public void putParameterWeight(String parameterName, double weight) { this.parameters.put(parameterName, weight); }
 
     private void initializeParameters(Set<String> paramNames){ paramNames.forEach(name -> this.parameters.put(name, 0.0)); }
 
@@ -76,5 +82,8 @@ public class Equation {
         return finalCost;
     }
 
-    public Map<String, Double> getParameters() { return parameters; }
+    public Map<String, Double> getParameters() { return this.parameters; }
+
+    @Override
+    public String toString() { return this.equationStr; }
 }

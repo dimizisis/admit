@@ -37,7 +37,7 @@ public class Project {
      */
     public boolean addDecision(Decision decision) {
         try {
-            decisions.add(decision);
+            this.decisions.add(decision);
             return true;
         } catch (Exception e){ return false; }
     }
@@ -52,7 +52,7 @@ public class Project {
      */
     public Decision findDecision(String decisionName) {
         try {
-            return decisions.stream().filter(d -> d.getName().equals(decisionName)).findFirst().get();
+            return this.decisions.stream().filter(d -> d.getName().equals(decisionName)).findFirst().get();
         } catch (NoSuchElementException e){ return null; }
     }
 
@@ -65,7 +65,7 @@ public class Project {
      * @return  true if removal was successful, false otherwise
      */
     public boolean removeDecision(Decision decision){
-        try { decisions.remove(decision); } catch (Exception e){ return false; }
+        try { this.decisions.remove(decision); } catch (Exception e){ return false; }
         return true;
     }
 
@@ -77,14 +77,19 @@ public class Project {
     /**
      * Tunes cost & benefit analysis, given a specific decision,
      * a min & a max value for a specific parameter.
+     * Returns true if analysis tuned successfully, false otherwise.
      *
      * @param  min  the parameter's value minimum threshold
      * @param  max  the parameter's value maximum threshold
      * @param  dec  the decision provided (containing the parameter)
+     *
+     * @return true if analysis tuned successfully, false otherwise.
      */
-    public void tuneCostBenefitAnalysis(Decision dec, int min, int max, String parameter) {
-        Decision currentDecision = findDecision(dec.getName());
-        currentDecision.tuneCostBenefitAnalysis(min, max, parameter);
+    public boolean tuneCostBenefitAnalysis(Decision dec, int min, int max, String parameter) {
+        try {
+            Decision currentDecision = findDecision(dec.getName());
+            return currentDecision.tuneCostBenefitAnalysis(min, max, parameter);
+        } catch (Exception e) { return false; }
     }
 
     public int getLoC() {
@@ -104,10 +109,10 @@ public class Project {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
-    public Set<Decision> getDecisions() { return decisions; }
+    public Set<Decision> getDecisions() { return this.decisions; }
 
     public String toString(){
         return this.getName();

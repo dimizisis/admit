@@ -12,8 +12,8 @@ public class Decision {
 
     private final int INTERVAL_LEN = 10;
 
-    public Decision(String name, Project project, String owner, String dDate){
-        this.name = name;
+    public Decision(String decisionName, Project project, String owner, String dDate){
+        this.name = decisionName;
         this.project = project;
         this.owner = owner;
         this.dDate = dDate;
@@ -22,11 +22,14 @@ public class Decision {
 
     /**
      * Tunes cost & benefit analysis, given a min & a max value for a specific parameter.
+     * Returns true if analysis tuned successfully, false otherwise.
      *
      * @param  min  the parameter's value minimum threshold
      * @param  max  the parameter's value maximum threshold
+     *
+     * @return true if analysis tuned successfully, false otherwise.
      */
-    public void tuneCostBenefitAnalysis(int min, int max, String parameter){
+    public boolean tuneCostBenefitAnalysis(int min, int max, String parameter){
         List<Double> intervals = new ArrayList<>();
 
         int range = max - min;
@@ -35,8 +38,12 @@ public class Decision {
         for (int i=0; i<=INTERVAL_LEN; ++i)
             intervals.add(min + interval*i);
 
-        intervals.forEach(i ->
-            models.stream().filter(m -> m.getEquation().getParameters().containsKey(parameter)).forEach(m -> m.getEquation().computeEquation(new AbstractMap.SimpleEntry<>(parameter, i))));
+        try {
+            intervals.forEach(i ->
+                    this.models.stream().filter(m -> m.getEquation().getParameters().containsKey(parameter))
+                            .forEach(m -> m.getEquation().computeEquation(new AbstractMap.SimpleEntry<>(parameter, i))));
+            return true;
+        } catch (Exception e) { return false; }
     }
 
     /**
@@ -49,8 +56,8 @@ public class Decision {
      */
     public ModelParameter findModel(String modelName){
         try {
-            return models.stream().filter(m -> m.getName().equals(modelName)).findFirst().get();
-        } catch (NoSuchElementException e){ return null; }
+            return this.models.stream().filter(m -> m.getName().equals(modelName)).findFirst().get();
+        } catch (NoSuchElementException e) { return null; }
     }
 
     /**
@@ -63,9 +70,9 @@ public class Decision {
      */
     public boolean addModel(ModelParameter model){
         try {
-            models.add(model);
+            this.models.add(model);
             return true;
-        } catch (Exception e){ return false; }
+        } catch (Exception e) { return false; }
     }
 
     /**
@@ -78,18 +85,18 @@ public class Decision {
      */
     public boolean removeModel(ModelParameter model){
         try {
-            models.remove(model);
+            this.models.remove(model);
             return true;
-        } catch (Exception e){ return false; }
+        } catch (Exception e) { return false; }
     }
 
-    public String getName() { return name; }
+    public String getName() { return this.name; }
 
-    public Project getProject() { return project; }
+    public Project getProject() { return this.project; }
 
-    public List<ModelParameter> getModels() { return models; }
+    public List<ModelParameter> getModels() { return this.models; }
 
-    public String toString(){ return this.getName(); }
+    public String toString() { return this.getName(); }
 
     @Override
     public boolean equals(Object o) {

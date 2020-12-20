@@ -6,18 +6,23 @@ public class ModelParameter {
     private String decision;
     private String type;
 
-    public ModelParameter(String name, String project, String decision, String type){
-        this.name = name;
-        this.project = project;
-        this.decision = decision;
-        this.type = type;
+    public ModelParameter(String modelName, String projectName, String decisionName, String modelType, Equation equation){
+        this.name = modelName;
+        this.project = projectName;
+        this.decision = decisionName;
+        this.type = modelType;
+        this.equation = equation;
     }
 
     public String getName() { return this.name; }
 
     public String getType() { return this.type; }
 
-    public Equation getEquation() { return equation; }
+    public Equation getEquation() { return this.equation; }
+
+    public String getProject() { return this.project; }
+
+    public String getDecision() { return this.decision; }
 
     @Override
     public boolean equals(Object o) {
