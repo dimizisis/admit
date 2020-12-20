@@ -154,7 +154,9 @@ public class ProjectList {
         } catch (Exception e) { return false; }
     }
 
-//    public boolean store(){
+    public List<Project> getProjects() { return this.projects; }
+
+    //    public boolean store(){
 //
 //    }
 

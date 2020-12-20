@@ -6,19 +6,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Equation {
-    protected Map<String, Double> parameters;
-    protected String id;
-    protected String equationStr;
 
-    public Equation(String id, String eq){
+    private Map<String, Double> parameters;
+    private String id;
+    private String equationStr;
+
+    public Equation(String id, String equationStr){
         this.id = id;
-        this.equationStr = eq;
+        this.equationStr = equationStr;
         this.parameters = new HashMap<>();
         initializeParameters(parseParameterNames());
     }
 
-    public Equation(String eq){
-        this.equationStr = eq;
+    public Equation(String equationStr){
+        this.equationStr = equationStr;
         this.parameters = new HashMap<>();
         initializeParameters(parseParameterNames());
     }
