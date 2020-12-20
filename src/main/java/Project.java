@@ -3,6 +3,10 @@ import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+/**
+ * Created by Dimitrios Zisis <zdimitris@outlook.com>
+ * Date: 03/12/2020
+ */
 public class Project {
     private String name;
     private double td;

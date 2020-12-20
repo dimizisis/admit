@@ -1,4 +1,8 @@
 
+/**
+ * Created by Dimitrios Zisis <zdimitris@outlook.com>
+ * Date: 03/12/2020
+ */
 public class ModelParameter {
     private String name;
     private Equation equation;

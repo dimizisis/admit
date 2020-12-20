@@ -1,8 +1,8 @@
 import java.util.AbstractMap;
 
-public class Test {
+public class EquationTest {
     public static void main(String[] args) {
-        String eq = "(Meeting_Duration_in_Minutes / 60) * (Meetings_Per_Month * 12) * Hourly_Rate * Number_of_Participants";
+        String eq = "(Meeting_Duration_in_Minutes-Meetings_Per_Month) / 60 * (Meetings_Per_Month * 12) * Hourly_Rate * Number_of_Participants";
         Equation equation = new Equation("eq", eq);
         System.out.println(equation.getParameters());
         equation.putParameterWeight("Meetings_Per_Month", 2);

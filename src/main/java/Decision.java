@@ -3,6 +3,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Created by Dimitrios Zisis <zdimitris@outlook.com>
+ * Date: 06/12/2020
+ */
 public class Decision {
     private String name;
     private Project project;

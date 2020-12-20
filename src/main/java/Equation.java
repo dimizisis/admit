@@ -5,6 +5,10 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Created by Dimitrios Zisis <zdimitris@outlook.com>
+ * Date: 03/12/2020
+ */
 public class Equation {
 
     private Map<String, Double> parameters;

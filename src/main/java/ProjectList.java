@@ -2,6 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Created by Dimitrios Zisis <zdimitris@outlook.com>
+ * Date: 13/12/2020
+ */
 public class ProjectList {
 
     private final List<Project> projects = new ArrayList<>();
@@ -156,11 +160,13 @@ public class ProjectList {
 
     public List<Project> getProjects() { return this.projects; }
 
-    //    public boolean store(){
-//
-//    }
+    /* TODO: 20/12/2020 */
+    public boolean store(){
+        return true;
+    }
 
-//    public boolean load(){
-//
-//    }
+    /* TODO: 20/12/2020 */
+    public boolean load(){
+        return true;
+    }
 }
