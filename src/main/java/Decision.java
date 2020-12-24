@@ -1,3 +1,6 @@
+package admit;
+
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,23 +10,25 @@ import java.util.NoSuchElementException;
  * Created by Dimitrios Zisis <zdimitris@outlook.com>
  * Date: 06/12/2020
  */
-public class Decision {
+public class Decision implements Serializable{
     private String name;
-    private Project project;
-    private String owner;
+    private AdmitProject project;
     private String dDate;
     private List<ModelParameter> models;
 
     private final int INTERVAL_LEN = 10;
 
-    public Decision(String decisionName, Project project, String owner, String dDate){
+    public Decision(String decisionName, AdmitProject project, String dDate){
         this.name = decisionName;
         this.project = project;
-        this.owner = owner;
         this.dDate = dDate;
         this.models = new ArrayList<>();
     }
 
+    public void removeAllModels(){
+        models = new ArrayList<>();
+    }
+    
     /**
      * Tunes cost & benefit analysis, given a min & a max value for a specific parameter.
      * Returns true if analysis tuned successfully, false otherwise.
@@ -95,8 +100,10 @@ public class Decision {
     }
 
     public String getName() { return this.name; }
+    
+    public String getDate() { return this.dDate; }
 
-    public Project getProject() { return this.project; }
+    public AdmitProject getProject() { return this.project; }
 
     public List<ModelParameter> getModels() { return this.models; }
 

@@ -1,3 +1,6 @@
+package admit;
+
+import java.io.Serializable;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
@@ -9,22 +12,25 @@ import java.util.regex.Pattern;
  * Created by Dimitrios Zisis <zdimitris@outlook.com>
  * Date: 03/12/2020
  */
-public class Equation {
+public class Equation implements Serializable{
 
     private Map<String, Double> parameters;
     private String id;
     private String equationStr;
+    public Map<Double, Double> tuneList;
 
     public Equation(String id, String equationStr){
         this.id = id;
         this.equationStr = equationStr;
         this.parameters = new HashMap<>();
+        this.tuneList = new HashMap<>();
         initializeParameters(parseParameterNames());
     }
 
     public Equation(String equationStr){
         this.equationStr = equationStr;
         this.parameters = new HashMap<>();
+        this.tuneList = new HashMap<>();
         initializeParameters(parseParameterNames());
     }
 
@@ -84,6 +90,7 @@ public class Equation {
                 .build()
                 .setVariables(tmpParams);
         try { finalCost = e.evaluate(); } catch (Exception ignored){}
+        tuneList.put(param.getValue(),finalCost);
         return finalCost;
     }
 

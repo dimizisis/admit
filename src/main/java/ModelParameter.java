@@ -1,9 +1,12 @@
+package admit;
+
+import java.io.Serializable;
 
 /**
  * Created by Dimitrios Zisis <zdimitris@outlook.com>
  * Date: 03/12/2020
  */
-public class ModelParameter {
+public class ModelParameter implements Serializable{
     private String name;
     private Equation equation;
     private String project;
@@ -16,6 +19,16 @@ public class ModelParameter {
         this.decision = decisionName;
         this.type = modelType;
         this.equation = equation;
+    }
+    
+    public ModelParameter(String modelName, String modelType, Equation equation){
+        this.name = modelName;
+        this.type = modelType;
+        this.equation = equation;
+    }
+    
+    public void clearPreviousTuning(){
+        this.equation.tuneList.clear();
     }
 
     public String getName() { return this.name; }

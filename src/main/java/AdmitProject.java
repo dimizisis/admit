@@ -1,4 +1,6 @@
+package admit;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -7,27 +9,16 @@ import java.util.Set;
  * Created by Dimitrios Zisis <zdimitris@outlook.com>
  * Date: 03/12/2020
  */
-public class Project {
+public class AdmitProject implements Serializable{
     private String name;
-    private double td;
-    private double energy;
-    private String security;
     private int loc;
     private int marketSize;
     private String marketShare;
     private double price;
     private Set<Decision> decisions;
 
-    public Project(String name, double td, double energy, String security,
-                   int loc, int marketSize, String marketShare, double price) {
+    public AdmitProject(String name){
         this.name = name;
-        this.td = td;
-        this.energy = energy;
-        this.security = security;
-        this.loc = loc;
-        this.marketSize = marketSize;
-        this.marketShare = marketShare;
-        this.price = price;
         decisions = new HashSet<>();
     }
 
@@ -96,22 +87,6 @@ public class Project {
         } catch (Exception e) { return false; }
     }
 
-    public int getLoC() {
-        return this.loc;
-    }
-
-    public double getPrice() {
-        return this.price;
-    }
-
-    public String getMarketShare() {
-        return this.marketShare;
-    }
-
-    public int getMarketSize() {
-        return this.marketSize;
-    }
-
     public String getName() {
         return this.name;
     }
@@ -125,9 +100,9 @@ public class Project {
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
-        if (!(o instanceof Project)) return false;
+        if (!(o instanceof AdmitProject)) return false;
 
-        Project other = (Project)o;
+        AdmitProject other = (AdmitProject)o;
         return other.getName().equals(this.getName());
     }
 }
